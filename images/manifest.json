@@ -1,0 +1,137 @@
+{
+  "signs": [
+    {
+      "path": "images/signs/IMG_0663.HEIC",
+      "alt": "signs - IMG 0663"
+    },
+    {
+      "path": "images/signs/MKX05268.jpg",
+      "alt": "signs - MKX05268"
+    },
+    {
+      "path": "images/signs/MKX05304.jpg",
+      "alt": "signs - MKX05304"
+    }
+  ],
+  "jewelry": [
+    {
+      "path": "images/jewelry/IMG_8381.jpg",
+      "alt": "jewelry - IMG 8381"
+    },
+    {
+      "path": "images/jewelry/MKX05185.jpg",
+      "alt": "jewelry - MKX05185"
+    },
+    {
+      "path": "images/jewelry/MKX05207.jpg",
+      "alt": "jewelry - MKX05207"
+    }
+  ],
+  "decor": [
+    {
+      "path": "images/decor/MKX05292-2.jpg",
+      "alt": "decor - MKX05292 2"
+    },
+    {
+      "path": "images/decor/MKX05405.jpg",
+      "alt": "decor - MKX05405"
+    },
+    {
+      "path": "images/decor/MKX05448-2.jpg",
+      "alt": "decor - MKX05448 2"
+    }
+  ],
+  "personalized": [
+    {
+      "path": "images/personalized/IMG_9166.HEIC",
+      "alt": "personalized - IMG 9166"
+    }
+  ],
+  "stickers": [
+    {
+      "path": "images/stickers/MKX05265-2.jpg",
+      "alt": "stickers - MKX05265 2"
+    },
+    {
+      "path": "images/stickers/MKX05418.jpg",
+      "alt": "stickers - MKX05418"
+    },
+    {
+      "path": "images/stickers/MKX05434-2.jpg",
+      "alt": "stickers - MKX05434 2"
+    }
+  ],
+  "stencils": [],
+  "custom": [
+    {
+      "path": "images/custom/IMG_7840 2.heic",
+      "alt": "custom - IMG 7840 2"
+    },
+    {
+      "path": "images/custom/MKX05406.jpg",
+      "alt": "custom - MKX05406"
+    },
+    {
+      "path": "images/custom/MKX05412.jpg",
+      "alt": "custom - MKX05412"
+    }
+  ],
+  "events": [],
+  "signs-bg": [
+    {
+      "path": "images/service-signs/ChatGPT Image Dec 21, 2025 at 02_33_27 PM.png",
+      "alt": "signs-bg - ChatGPT Image Dec 21, 2025 at 02 33 27 PM"
+    }
+  ],
+  "jewelry-bg": [
+    {
+      "path": "images/service-jewelry/ChatGPT Image Dec 21, 2025 at 02_41_40 PM.png",
+      "alt": "jewelry-bg - ChatGPT Image Dec 21, 2025 at 02 41 40 PM"
+    }
+  ],
+  "decor-bg": [
+    {
+      "path": "images/service-decor/ChatGPT Image Dec 21, 2025 at 03_13_50 PM.png",
+      "alt": "decor-bg - ChatGPT Image Dec 21, 2025 at 03 13 50 PM"
+    }
+  ],
+  "personalized-bg": [
+    {
+      "path": "images/service-personalized/ChatGPT Image Dec 21, 2025 at 02_55_48 PM.png",
+      "alt": "personalized-bg - ChatGPT Image Dec 21, 2025 at 02 55 48 PM"
+    }
+  ],
+  "stickers-bg": [],
+  "stencils-bg": [
+    {
+      "path": "images/service-stencils/ChatGPT Image Dec 21, 2025 at 02_19_03 PM.png",
+      "alt": "stencils-bg - ChatGPT Image Dec 21, 2025 at 02 19 03 PM"
+    }
+  ],
+  "custom-bg": [
+    {
+      "path": "images/service-custom/ChatGPT Image Dec 21, 2025 at 02_47_32 PM.png",
+      "alt": "custom-bg - ChatGPT Image Dec 21, 2025 at 02 47 32 PM"
+    }
+  ],
+  "events-bg": [
+    {
+      "path": "images/service-events/ChatGPT Image Dec 21, 2025 at 03_18_51 PM.png",
+      "alt": "events-bg - ChatGPT Image Dec 21, 2025 at 03 18 51 PM"
+    }
+  ],
+  "misc": [
+    {
+      "path": "images/Misc/Cut_Details_original_399861.jpg",
+      "alt": "Background - Cut Details original 399861"
+    },
+    {
+      "path": "images/Misc/Laser_Cutting_original_394017.jpg",
+      "alt": "Background - Laser Cutting original 394017"
+    },
+    {
+      "path": "images/Misc/Worker__Operating_Laser_Cutting_Machine_original_375174.jpg",
+      "alt": "Background - Worker  Operating Laser Cutting Machine original 375174"
+    }
+  ]
+}

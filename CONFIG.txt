@@ -1,0 +1,29 @@
+═══════════════════════════════════════════════════════════════
+  IMPORTANT: UPDATE THESE BEFORE GOING LIVE
+═══════════════════════════════════════════════════════════════
+
+1. EMAIL ADDRESS
+   Search and replace "your-email@example.com" in:
+   - index.html (line 245)
+   - about.html (line 134)
+   - script.js (line 243)
+
+2. BUSINESS NAME
+   If you want to change "DCR LASER CUTTING", search and replace
+   throughout all HTML files.
+
+3. WEBSITE URL
+   Update URLs in:
+   - index.html (canonical, og:url, twitter:url)
+   - about.html (canonical)
+   - sitemap.xml (all URLs)
+   - robots.txt (sitemap URL)
+
+4. BUSINESS ADDRESS (if you have a physical location)
+   Update in index.html structured data section (around line 40)
+
+5. PHONE NUMBER (if you have one)
+   Add to structured data in index.html
+
+═══════════════════════════════════════════════════════════════
+

@@ -1,0 +1,637 @@
+// Carousel functionality
+class Carousel {
+    constructor(carouselId) {
+        // carouselId is the ID of the track element (e.g., "signs-carousel")
+        this.track = document.getElementById(carouselId);
+        if (!this.track) {
+            console.error(`Carousel track not found: ${carouselId}`);
+            return;
+        }
+        
+        // Refresh items list to get all current images
+        this.items = this.track.querySelectorAll('.carousel-item');
+        this.currentIndex = 0;
+        this.autoPlayInterval = null;
+        
+        if (this.items.length === 0) {
+            console.log(`No images found for carousel: ${carouselId}`);
+            return;
+        }
+        
+        console.log(`Initializing carousel ${carouselId} with ${this.items.length} images`);
+        
+        // Set initial position
+        this.goToSlide(0);
+        
+        this.init();
+    }
+    
+    // Refresh items list (call this if images are added dynamically)
+    refreshItems() {
+        this.items = this.track.querySelectorAll('.carousel-item');
+        if (this.currentIndex >= this.items.length) {
+            this.currentIndex = 0;
+        }
+    }
+    
+    init() {
+        // Set up auto-play
+        this.startAutoPlay();
+        
+        // Pause on hover - find the container parent
+        const container = this.track.closest('.carousel-container');
+        if (container) {
+            container.addEventListener('mouseenter', () => this.stopAutoPlay());
+            container.addEventListener('mouseleave', () => this.startAutoPlay());
+        }
+    }
+    
+    goToSlide(index) {
+        // Refresh items in case new ones were added
+        this.refreshItems();
+        
+        if (this.items.length === 0) return;
+        
+        // Ensure index is within bounds
+        if (index < 0) index = this.items.length - 1;
+        if (index >= this.items.length) index = 0;
+        
+        this.currentIndex = index;
+        const translateX = -this.currentIndex * 100;
+        this.track.style.transform = `translateX(${translateX}%)`;
+        
+        console.log(`Carousel slide ${this.currentIndex + 1} of ${this.items.length}`);
+    }
+    
+    next() {
+        if (this.items.length === 0) return;
+        this.currentIndex = (this.currentIndex + 1) % this.items.length;
+        this.goToSlide(this.currentIndex);
+    }
+    
+    prev() {
+        if (this.items.length === 0) return;
+        this.currentIndex = (this.currentIndex - 1 + this.items.length) % this.items.length;
+        this.goToSlide(this.currentIndex);
+    }
+    
+    startAutoPlay() {
+        this.stopAutoPlay();
+        this.autoPlayInterval = setInterval(() => {
+            this.next();
+        }, 4000); // Change slide every 4 seconds
+    }
+    
+    stopAutoPlay() {
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+            this.autoPlayInterval = null;
+        }
+    }
+}
+
+// Background images removed - using solid colors only
+
+// Load background images from Misc folder for specific sections
+async function loadSectionBackgrounds() {
+    try {
+        const response = await fetch('images/manifest.json');
+        if (response.ok) {
+            const manifest = await response.json();
+            if (manifest.misc && manifest.misc.length > 0) {
+                const images = manifest.misc;
+                
+                // Apply first image to hero section
+                if (images.length > 0) {
+                    const heroSection = document.querySelector('.hero');
+                    if (heroSection && images[0]) {
+                        const imagePath = images[0].path || images[0];
+                        heroSection.style.backgroundImage = `
+                            linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.5) 100%),
+                            url('${imagePath}')
+                        `;
+                        heroSection.style.backgroundSize = 'cover';
+                        heroSection.style.backgroundPosition = 'center';
+                        heroSection.style.backgroundAttachment = 'fixed';
+                        console.log(`Applied background to hero: ${imagePath}`);
+                    }
+                }
+                
+                // Apply second image to trust section (Bringing Your Vision to Life)
+                if (images.length > 1) {
+                    const trustSection = document.querySelector('.trust-section');
+                    if (trustSection && images[1]) {
+                        const imagePath = images[1].path || images[1];
+                        trustSection.style.backgroundImage = `
+                            linear-gradient(135deg, rgba(50, 50, 50, 0.7) 0%, rgba(40, 40, 40, 0.6) 100%),
+                            url('${imagePath}')
+                        `;
+                        trustSection.style.backgroundSize = 'cover';
+                        trustSection.style.backgroundPosition = 'center';
+                        trustSection.style.backgroundAttachment = 'fixed';
+                        console.log(`Applied background to trust section: ${imagePath}`);
+                    }
+                }
+                
+                // Apply third image to CTA section (Ready to Start Your Project?)
+                if (images.length > 2) {
+                    const ctaSection = document.querySelector('.cta-section');
+                    if (ctaSection && images[2]) {
+                        const imagePath = images[2].path || images[2];
+                        ctaSection.style.backgroundImage = `
+                            linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.6) 100%),
+                            url('${imagePath}')
+                        `;
+                        ctaSection.style.backgroundSize = 'cover';
+                        ctaSection.style.backgroundPosition = 'center';
+                        ctaSection.style.backgroundAttachment = 'fixed';
+                        console.log(`Applied background to CTA section: ${imagePath}`);
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.log('Could not load background images from manifest');
+    }
+}
+
+// Load service card background images
+async function loadServiceCardBackgrounds() {
+    try {
+        const response = await fetch('images/manifest.json');
+        if (response.ok) {
+            const manifest = await response.json();
+            const serviceCategories = ['signs', 'jewelry', 'decor', 'personalized', 'stickers', 'stencils', 'custom', 'events'];
+            
+            console.log('Loading service card backgrounds...');
+            serviceCategories.forEach(category => {
+                const bgKey = `${category}-bg`;
+                const serviceCard = document.querySelector(`.service-card[data-target="${category}"]`);
+                
+                if (manifest[bgKey] && manifest[bgKey].length > 0) {
+                    // Use the first image from the folder
+                    let imagePath = manifest[bgKey][0].path || manifest[bgKey][0];
+                    // Encode the path to handle spaces and special characters
+                    imagePath = encodeURI(imagePath);
+                    
+                    if (serviceCard) {
+                        // Apply overlay directly to the background image
+                        const fullImagePath = imagePath.startsWith('http') ? imagePath : (imagePath.startsWith('/') ? imagePath : `./${imagePath}`);
+                        serviceCard.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${fullImagePath}')`;
+                        serviceCard.style.backgroundSize = 'cover';
+                        serviceCard.style.backgroundPosition = 'center';
+                        serviceCard.style.backgroundRepeat = 'no-repeat';
+                        console.log(`✅ Applied background to ${category} service card: ${fullImagePath}`);
+                    } else {
+                        console.warn(`⚠️ Service card not found for category: ${category}`);
+                    }
+                } else {
+                    console.log(`ℹ️ No background image found for ${category} (folder: service-${category})`);
+                }
+            });
+        } else {
+            console.error('Failed to fetch manifest.json');
+        }
+    } catch (error) {
+        console.error('Error loading service card background images:', error);
+    }
+}
+
+// Initialize carousels when DOM is loaded
+document.addEventListener('DOMContentLoaded', async () => {
+    // Load background images first
+    await loadSectionBackgrounds();
+    
+    // Load service card backgrounds
+    await loadServiceCardBackgrounds();
+    
+    // Load images for each carousel category
+    const categories = ['signs', 'jewelry', 'decor', 'personalized', 'stickers', 'stencils', 'custom', 'events'];
+    
+    // Load all images
+    await Promise.all(categories.map(category => loadCarouselImages(category)));
+    
+    // Wait a bit for images to render, then initialize carousels
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Initialize carousels after images are loaded
+    categories.forEach(category => {
+        const carouselId = `${category}-carousel`;
+        const carouselTrack = document.getElementById(carouselId);
+        if (carouselTrack) {
+            // Only initialize if there are actual images (not just placeholder)
+            const images = carouselTrack.querySelectorAll('.carousel-item');
+            const hasImages = images.length > 0;
+            
+            if (hasImages) {
+                console.log(`Found ${images.length} images for ${category}, initializing carousel...`);
+                // Wait for images to fully load - check img elements inside carousel-item divs
+                const imagePromises = Array.from(images).map(item => {
+                    const img = item.querySelector('img') || item;
+                    if (img.tagName === 'IMG' && img.complete && img.naturalWidth > 0) return Promise.resolve();
+                    if (img.tagName === 'IMG') {
+                        return new Promise((resolve) => {
+                            img.onload = resolve;
+                            img.onerror = resolve; // Continue even if some images fail
+                            setTimeout(resolve, 3000); // Timeout after 3 seconds
+                        });
+                    }
+                    return Promise.resolve(); // For placeholders or non-img elements
+                });
+                
+                Promise.all(imagePromises).then(() => {
+                    console.log(`Initializing carousel for ${category}`);
+                    carousels[category] = new Carousel(carouselId);
+                });
+            } else {
+                console.log(`No images found for ${category}`);
+            }
+        }
+    });
+    
+    // Set up carousel navigation buttons
+    setupCarouselButtons();
+});
+
+// Load images from folder for each category
+async function loadCarouselImages(category) {
+    const carouselTrack = document.getElementById(`${category}-carousel`);
+    if (!carouselTrack) return;
+    
+    // First, try to load from manifest.json (best method)
+    try {
+        const response = await fetch(`images/manifest.json`);
+        if (response.ok) {
+            const manifest = await response.json();
+            if (manifest[category] && manifest[category].length > 0) {
+                // Use Promise.all to handle async HEIC conversion
+                await Promise.all(manifest[category].map(imageData => 
+                    addImageToCarousel(category, imageData.path, imageData.alt)
+                ));
+                return; // Successfully loaded from manifest
+            }
+        }
+    } catch (error) {
+        // Manifest doesn't exist or failed to load, try alternative method
+        console.log(`Manifest not found for ${category}, trying alternative loading...`);
+    }
+    
+    // Alternative: Try multiple naming patterns to find images
+    const commonExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif', '.JPG', '.JPEG', '.PNG', '.WEBP', '.HEIC', '.HEIF'];
+    const maxAttempts = 50; // Try up to 50 images per category
+    
+    let loadedCount = 0;
+    const loadedPaths = new Set(); // Track loaded images to avoid duplicates
+    
+    // Try multiple naming patterns
+    const namingPatterns = [
+        (i, ext) => `${category}${i}${ext}`,           // signs1.jpg
+        (i, ext) => `${category}_${i}${ext}`,         // signs_1.jpg
+        (i, ext) => `${category}-${i}${ext}`,         // signs-1.jpg
+        (i, ext) => `image${i}${ext}`,                // image1.jpg
+        (i, ext) => `img${i}${ext}`,                  // img1.jpg
+        (i, ext) => `${i}${ext}`,                     // 1.jpg
+        (i, ext) => `${String(i).padStart(2, '0')}${ext}`, // 01.jpg
+        (i, ext) => `${category}_${String(i).padStart(2, '0')}${ext}`, // signs_01.jpg
+    ];
+    
+    // Try each pattern
+    for (const pattern of namingPatterns) {
+        for (let i = 1; i <= maxAttempts; i++) {
+            for (const ext of commonExtensions) {
+                const filename = pattern(i, ext);
+                const imagePath = `images/${category}/${filename}`;
+                
+                // Skip if we've already loaded this path
+                if (loadedPaths.has(imagePath)) continue;
+                
+                const img = new Image();
+                
+                // For HEIC files, we need to convert them first
+                if (isHeicFile(imagePath)) {
+                    // Try to fetch and convert HEIC
+                    try {
+                        const response = await fetch(imagePath);
+                        if (response.ok) {
+                            addImageToCarousel(category, imagePath, `${category} product ${i}`);
+                            loadedPaths.add(imagePath);
+                            loadedCount++;
+                        }
+                    } catch (error) {
+                        // HEIC file doesn't exist or can't be loaded
+                    }
+                } else {
+                    // For regular image formats, check if they exist
+                    const imageLoaded = await new Promise((resolve) => {
+                        img.onload = () => {
+                            if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+                                resolve(true);
+                            } else {
+                                resolve(false);
+                            }
+                        };
+                        img.onerror = () => resolve(false);
+                        img.src = imagePath;
+                    });
+                    
+                    if (imageLoaded) {
+                        addImageToCarousel(category, imagePath, `${category} product ${i}`);
+                        loadedPaths.add(imagePath);
+                        loadedCount++;
+                    }
+                }
+            }
+        }
+    }
+    
+    // If no images were loaded, show placeholder
+    if (loadedCount === 0 && carouselTrack.children.length === 0) {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'carousel-item carousel-placeholder';
+        placeholder.style.cssText = `
+            min-width: 100%;
+            background: rgba(60, 40, 25, 0.5);
+            border: 2px dashed rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 18px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        `;
+        placeholder.innerHTML = `Add images to images/${category}/ folder<br><small style="font-size: 14px; margin-top: 10px; display: block;">Supported: image1.jpg, ${category}1.jpg, 1.jpg, etc.<br>Or run: node generate-manifest.js</small>`;
+        carouselTrack.appendChild(placeholder);
+    }
+}
+
+// Setup carousel navigation buttons
+function setupCarouselButtons() {
+    const prevButtons = document.querySelectorAll('.carousel-prev');
+    const nextButtons = document.querySelectorAll('.carousel-next');
+    
+    prevButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const carouselId = btn.getAttribute('data-carousel');
+            const carouselInstance = carousels[carouselId];
+            if (carouselInstance) {
+                carouselInstance.prev();
+            }
+        });
+    });
+    
+    nextButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const carouselId = btn.getAttribute('data-carousel');
+            const carouselInstance = carousels[carouselId];
+            if (carouselInstance) {
+                carouselInstance.next();
+            }
+        });
+    });
+}
+
+// Store carousel instances
+const carousels = {};
+
+// Re-initialize carousels after images are potentially added
+function reinitializeCarousels() {
+    const categories = ['signs', 'jewelry', 'decor', 'personalized', 'stickers', 'stencils', 'custom', 'events'];
+    categories.forEach(category => {
+        const carouselId = `${category}-carousel`;
+        const carouselElement = document.getElementById(carouselId);
+        if (carouselElement && !carousels[category]) {
+            carousels[category] = new Carousel(carouselId);
+        }
+    });
+}
+
+// Contact Modal functionality
+const modal = document.getElementById('contact-modal');
+const contactTriggers = document.querySelectorAll('.contact-trigger');
+const closeModal = document.querySelector('.modal-close');
+const contactForm = document.getElementById('contact-form');
+
+// Open modal
+contactTriggers.forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    });
+});
+
+// Close modal
+if (closeModal) {
+    closeModal.addEventListener('click', () => {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    });
+}
+
+// Close modal when clicking outside
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+});
+
+// Handle form submission
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Get form values
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
+        
+        // Create mailto link
+        const emailBody = `Name: ${name}%0D%0AEmail: ${email}%0D%0APhone: ${phone}%0D%0A%0D%0AMessage:%0D%0A${message}`;
+        const mailtoLink = `mailto:your-email@example.com?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
+        
+        // Open email client
+        window.location.href = mailtoLink;
+        
+        // Show success message
+        alert('Thank you for your message! Your email client should open shortly.');
+        
+        // Reset form
+        contactForm.reset();
+        
+        // Close modal
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    });
+}
+
+// Header scroll effect
+window.addEventListener('scroll', () => {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
+
+// Service card click handlers - scroll to corresponding carousel
+document.addEventListener('DOMContentLoaded', () => {
+    const serviceCards = document.querySelectorAll('.service-card[data-target]');
+    serviceCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const target = card.getAttribute('data-target');
+            const carouselSection = document.querySelector(`#gallery .carousel-section:nth-of-type(${getCarouselIndex(target)})`);
+            
+            if (carouselSection) {
+                const headerOffset = 80;
+                const elementPosition = carouselSection.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});
+
+// Helper function to get carousel index based on category
+function getCarouselIndex(category) {
+    const categoryOrder = ['signs', 'jewelry', 'decor', 'personalized', 'stickers', 'stencils', 'custom', 'events'];
+    return categoryOrder.indexOf(category) + 1; // +1 because nth-of-type is 1-indexed
+}
+
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href === '#contact') {
+            e.preventDefault();
+            const contactTrigger = document.querySelector('.contact-trigger');
+            if (contactTrigger) {
+                contactTrigger.click();
+            }
+            return;
+        }
+        
+        if (href !== '#' && href.length > 1) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    });
+});
+
+// Function to convert HEIC to JPEG/PNG
+async function convertHeicToWebFormat(heicFile) {
+    try {
+        // Check if heic2any is available
+        if (typeof heic2any === 'undefined') {
+            console.warn('heic2any library not loaded, cannot convert HEIC files');
+            return null;
+        }
+        
+        // Fetch the HEIC file as a blob
+        const response = await fetch(heicFile);
+        const blob = await response.blob();
+        
+        // Convert HEIC to JPEG
+        const convertedBlob = await heic2any({
+            blob: blob,
+            toType: 'image/jpeg',
+            quality: 0.9
+        });
+        
+        // heic2any returns an array, get the first item
+        const jpegBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+        
+        // Create object URL from the converted blob
+        return URL.createObjectURL(jpegBlob);
+    } catch (error) {
+        console.error(`Error converting HEIC file ${heicFile}:`, error);
+        return null;
+    }
+}
+
+// Function to check if file is HEIC
+function isHeicFile(filePath) {
+    const ext = filePath.toLowerCase();
+    return ext.endsWith('.heic') || ext.endsWith('.heif');
+}
+
+// Function to add image to carousel (used by loadCarouselImages)
+async function addImageToCarousel(category, imagePath, altText = '') {
+    const carouselTrack = document.getElementById(`${category}-carousel`);
+    if (!carouselTrack) {
+        console.error(`Carousel track not found for ${category}`);
+        return;
+    }
+    
+    // Remove placeholder if it exists
+    const placeholder = carouselTrack.querySelector('.carousel-placeholder');
+    if (placeholder) {
+        placeholder.remove();
+    }
+    
+    // Check if image already exists to avoid duplicates
+    const existingImages = carouselTrack.querySelectorAll('.carousel-item img');
+    for (let existingImg of existingImages) {
+        const imgSrc = existingImg.src || existingImg.getAttribute('src');
+        if (imgSrc && (imgSrc.includes(imagePath) || imgSrc.endsWith(imagePath))) {
+            return; // Image already added
+        }
+    }
+    
+    const imgWrapper = document.createElement('div');
+    imgWrapper.className = 'carousel-item';
+    
+    const img = document.createElement('img');
+    img.alt = altText || `${category} product`;
+    img.loading = 'lazy';
+    
+    // Handle HEIC files
+    if (isHeicFile(imagePath)) {
+        console.log(`Converting HEIC file: ${imagePath}`);
+        const convertedUrl = await convertHeicToWebFormat(imagePath);
+        if (convertedUrl) {
+            img.src = convertedUrl;
+            console.log(`Successfully converted and loaded HEIC: ${imagePath}`);
+        } else {
+            console.warn(`Failed to convert HEIC file: ${imagePath}`);
+            imgWrapper.style.display = 'none';
+        }
+    } else {
+        img.src = imagePath;
+    }
+    
+    // Handle image load errors gracefully
+    img.onerror = function() {
+        console.warn(`Failed to load image: ${imagePath}`);
+        imgWrapper.style.display = 'none';
+    };
+    
+    img.onload = function() {
+        console.log(`Successfully loaded image: ${imagePath}`);
+    };
+    
+    imgWrapper.appendChild(img);
+    carouselTrack.appendChild(imgWrapper);
+    console.log(`Added image to ${category} carousel: ${imagePath}`);
+}
+

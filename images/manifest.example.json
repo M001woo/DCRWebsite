@@ -1,0 +1,55 @@
+{
+  "signs": [
+    {
+      "path": "images/signs/sign1.jpg",
+      "alt": "Custom wooden sign with engraved text"
+    },
+    {
+      "path": "images/signs/sign2.jpg",
+      "alt": "Laser engraved business sign"
+    }
+  ],
+  "jewelry": [
+    {
+      "path": "images/jewelry/jewelry1.jpg",
+      "alt": "Custom laser cut wooden jewelry"
+    }
+  ],
+  "decor": [
+    {
+      "path": "images/decor/decor1.jpg",
+      "alt": "Custom home decor item"
+    }
+  ],
+  "personalized": [
+    {
+      "path": "images/personalized/personalized1.jpg",
+      "alt": "Personalized wooden item"
+    }
+  ],
+  "stickers": [
+    {
+      "path": "images/stickers/sticker1.jpg",
+      "alt": "Custom vinyl sticker"
+    }
+  ],
+  "stencils": [
+    {
+      "path": "images/stencils/stencil1.jpg",
+      "alt": "Laser cut stencil"
+    }
+  ],
+  "custom": [
+    {
+      "path": "images/custom/custom1.jpg",
+      "alt": "Custom laser cut product"
+    }
+  ],
+  "events": [
+    {
+      "path": "images/events/event1.jpg",
+      "alt": "Custom event decor display"
+    }
+  ]
+}
+
