@@ -138,7 +138,7 @@ body {
     /* Background image will be applied via JavaScript from images/Misc/ folder */
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.5) 100%);
     background-size: cover;
-    background-position: center;
+    background-position: center center;
     background-attachment: fixed;
     background-color: #1a1a1a;
     position: relative;

@@ -165,7 +165,7 @@ async function loadSectionBackgrounds() {
                             url('${imagePath}')
                         `;
                         heroSection.style.backgroundSize = 'cover';
-                        heroSection.style.backgroundPosition = 'center';
+                        heroSection.style.backgroundPosition = 'center center';
                         heroSection.style.backgroundAttachment = 'fixed';
                         console.log(`Applied background to hero: ${imagePath}`);
                     }
