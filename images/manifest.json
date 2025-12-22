@@ -77,7 +77,20 @@
       "alt": "stickers - MKX05446"
     }
   ],
-  "stencils": [],
+  "stencils": [
+    {
+      "path": "images/stencils/IMG_9887.HEIC",
+      "alt": "stencils - IMG 9887"
+    },
+    {
+      "path": "images/stencils/IMG_9889.heic",
+      "alt": "stencils - IMG 9889"
+    },
+    {
+      "path": "images/stencils/IMG_9891.HEIC",
+      "alt": "stencils - IMG 9891"
+    }
+  ],
   "custom": [
     {
       "path": "images/custom/MKX05406.jpg",

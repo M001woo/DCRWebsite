@@ -600,15 +600,22 @@ async function convertHeicToWebFormat(heicFile) {
     try {
         // Check if heic2any is available
         if (typeof heic2any === 'undefined') {
-            console.warn('heic2any library not loaded, cannot convert HEIC files');
+            console.error('heic2any library not loaded, cannot convert HEIC files');
             return null;
         }
         
+        console.log(`Fetching HEIC file: ${heicFile}`);
         // Fetch the HEIC file as a blob
         const response = await fetch(heicFile);
+        if (!response.ok) {
+            console.error(`Failed to fetch HEIC file: ${heicFile} - Status: ${response.status}`);
+            return null;
+        }
         const blob = await response.blob();
+        console.log(`Fetched blob for ${heicFile}, size: ${blob.size} bytes`);
         
         // Convert HEIC to JPEG
+        console.log(`Starting HEIC conversion for: ${heicFile}`);
         const convertedBlob = await heic2any({
             blob: blob,
             toType: 'image/jpeg',
@@ -617,9 +624,15 @@ async function convertHeicToWebFormat(heicFile) {
         
         // heic2any returns an array, get the first item
         const jpegBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+        if (!jpegBlob) {
+            console.error(`Conversion failed for ${heicFile} - no blob returned`);
+            return null;
+        }
         
         // Create object URL from the converted blob
-        return URL.createObjectURL(jpegBlob);
+        const objectUrl = URL.createObjectURL(jpegBlob);
+        console.log(`Successfully converted HEIC to JPEG: ${heicFile}`);
+        return objectUrl;
     } catch (error) {
         console.error(`Error converting HEIC file ${heicFile}:`, error);
         return null;
@@ -665,13 +678,20 @@ async function addImageToCarousel(category, imagePath, altText = '') {
     // Handle HEIC files
     if (isHeicFile(imagePath)) {
         console.log(`Converting HEIC file: ${imagePath}`);
-        const convertedUrl = await convertHeicToWebFormat(imagePath);
-        if (convertedUrl) {
-            img.src = convertedUrl;
-            console.log(`Successfully converted and loaded HEIC: ${imagePath}`);
-        } else {
-            console.warn(`Failed to convert HEIC file: ${imagePath}`);
+        try {
+            const convertedUrl = await convertHeicToWebFormat(imagePath);
+            if (convertedUrl) {
+                img.src = convertedUrl;
+                console.log(`Successfully converted and loaded HEIC: ${imagePath}`);
+            } else {
+                console.error(`Failed to convert HEIC file: ${imagePath} - conversion returned null`);
+                imgWrapper.style.display = 'none';
+                return; // Don't add to carousel if conversion failed
+            }
+        } catch (error) {
+            console.error(`Error processing HEIC file ${imagePath}:`, error);
             imgWrapper.style.display = 'none';
+            return; // Don't add to carousel if error occurred
         }
     } else {
         img.src = imagePath;
