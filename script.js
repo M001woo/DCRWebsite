@@ -572,67 +572,7 @@ function reinitializeCarousels() {
     });
 }
 
-// Contact Modal functionality
-const modal = document.getElementById('contact-modal');
-const contactTriggers = document.querySelectorAll('.contact-trigger');
-const closeModal = document.querySelector('.modal-close');
-const contactForm = document.getElementById('contact-form');
-
-// Open modal
-contactTriggers.forEach(trigger => {
-    trigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-    });
-});
-
-// Close modal
-if (closeModal) {
-    closeModal.addEventListener('click', () => {
-        modal.classList.remove('show');
-        document.body.style.overflow = '';
-    });
-}
-
-// Close modal when clicking outside
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        modal.classList.remove('show');
-        document.body.style.overflow = '';
-    }
-});
-
-// Handle form submission
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Get form values
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const subject = document.getElementById('subject').value;
-        const message = document.getElementById('message').value;
-        
-        // Create mailto link
-        const emailBody = `Name: ${name}%0D%0AEmail: ${email}%0D%0APhone: ${phone}%0D%0A%0D%0AMessage:%0D%0A${message}`;
-        const mailtoLink = `mailto:thedcrcompany@gmail.com?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
-        
-        // Open email client
-        window.location.href = mailtoLink;
-        
-        // Show success message
-        alert('Thank you for your message! Your email client should open shortly.');
-        
-        // Reset form
-        contactForm.reset();
-        
-        // Close modal
-        modal.classList.remove('show');
-        document.body.style.overflow = '';
-    });
-}
+// Contact functionality removed - buttons now use direct mailto: links
 
 // Header scroll effect
 window.addEventListener('scroll', () => {
@@ -684,15 +624,6 @@ function getCarouselIndex(category) {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
-        if (href === '#contact') {
-            e.preventDefault();
-            const contactTrigger = document.querySelector('.contact-trigger');
-            if (contactTrigger) {
-                contactTrigger.click();
-            }
-            return;
-        }
-        
         if (href !== '#' && href.length > 1) {
             e.preventDefault();
             const target = document.querySelector(href);

@@ -532,6 +532,8 @@ body {
     max-width: 100%;
     box-sizing: border-box;
     word-wrap: break-word;
+    text-decoration: none;
+    text-align: center;
 }
 
 .cta-button:hover {
@@ -1019,6 +1021,8 @@ body {
         width: 100%;
         max-width: 100vw;
         box-sizing: border-box;
+        background-size: 50% !important;
+        background-repeat: no-repeat;
     }
     
     .hero-content {
@@ -1375,6 +1379,8 @@ body {
     .hero {
         padding: 80px 12px;
         padding-top: 120px;
+        background-size: 50% !important;
+        background-repeat: no-repeat;
     }
     
     .hero-title {
