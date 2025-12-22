@@ -670,12 +670,18 @@ body {
 
 /* About Page Styles */
 .about-hero {
-    margin-top: 80px;
-    padding: 100px 24px;
+    padding-top: 160px;
+    padding-bottom: 100px;
+    padding-left: 24px;
+    padding-right: 24px;
     background: #000000;
-    background-image: none;
+    /* Background image will be applied via JavaScript from images/Misc/ folder */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     text-align: center;
     color: #fff;
+    position: relative;
 }
 
 .page-title {
@@ -684,6 +690,7 @@ body {
     letter-spacing: 2px;
     line-height: 1.1;
     text-transform: uppercase;
+    color: var(--mustard-yellow);
 }
 
 .about-content {
@@ -694,6 +701,10 @@ body {
 
 .about-section {
     margin-bottom: 80px;
+}
+
+.commitment-section {
+    padding: 0;
 }
 
 .about-section h2 {
@@ -723,11 +734,45 @@ body {
     padding: 20px;
     margin-bottom: 16px;
     background-color: rgba(0, 0, 0, 0.5);
+    /* Background image will be applied via JavaScript from images/Misc/ folder */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-left: 4px solid var(--primary-color);
     font-size: 16px;
     line-height: 1.6;
-    color: var(--text-light);
+    color: var(--mustard-yellow);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.6);
     border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.commitment-list li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.6) 100%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.commitment-list li > * {
+    position: relative;
+    z-index: 2;
+    color: var(--mustard-yellow);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+.commitment-list li strong {
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 2;
 }
 
 .features-grid {
@@ -738,7 +783,7 @@ body {
 }
 
 .feature-card {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: #000000;
     padding: 32px;
     border-radius: 12px;
     border-top: 4px solid var(--primary-color);

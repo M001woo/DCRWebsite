@@ -11,19 +11,27 @@
   ],
   "jewelry": [
     {
-      "path": "images/jewelry/IMG_8381.jpg",
-      "alt": "jewelry - IMG 8381"
-    },
-    {
       "path": "images/jewelry/MKX05185.jpg",
       "alt": "jewelry - MKX05185"
     },
     {
       "path": "images/jewelry/MKX05207.jpg",
       "alt": "jewelry - MKX05207"
+    },
+    {
+      "path": "images/jewelry/MKX05224.jpg",
+      "alt": "jewelry - MKX05224"
+    },
+    {
+      "path": "images/jewelry/MKX05252.jpg",
+      "alt": "jewelry - MKX05252"
     }
   ],
   "decor": [
+    {
+      "path": "images/decor/IMG_9035.jpg",
+      "alt": "decor - IMG 9035"
+    },
     {
       "path": "images/decor/MKX05292-2.jpg",
       "alt": "decor - MKX05292 2"
@@ -49,12 +57,24 @@
       "alt": "stickers - MKX05265 2"
     },
     {
-      "path": "images/stickers/MKX05418.jpg",
-      "alt": "stickers - MKX05418"
+      "path": "images/stickers/MKX05435.jpg",
+      "alt": "stickers - MKX05435"
     },
     {
-      "path": "images/stickers/MKX05434-2.jpg",
-      "alt": "stickers - MKX05434 2"
+      "path": "images/stickers/MKX05437.jpg",
+      "alt": "stickers - MKX05437"
+    },
+    {
+      "path": "images/stickers/MKX05439.jpg",
+      "alt": "stickers - MKX05439"
+    },
+    {
+      "path": "images/stickers/MKX05440.jpg",
+      "alt": "stickers - MKX05440"
+    },
+    {
+      "path": "images/stickers/MKX05446.jpg",
+      "alt": "stickers - MKX05446"
     }
   ],
   "stencils": [],

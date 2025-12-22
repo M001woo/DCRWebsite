@@ -158,6 +158,34 @@ async function loadSectionBackgrounds() {
                         console.log(`Applied background to CTA section: ${imagePath}`);
                     }
                 }
+                
+                // Apply second image to about hero section (About Design.Create.Repeat.)
+                if (images.length > 1) {
+                    const aboutHeroSection = document.querySelector('.about-hero');
+                    if (aboutHeroSection && images[1]) {
+                        const imagePath = images[1].path || images[1];
+                        aboutHeroSection.style.backgroundImage = `
+                            linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.5) 100%),
+                            url('${imagePath}')
+                        `;
+                        aboutHeroSection.style.backgroundSize = 'cover';
+                        aboutHeroSection.style.backgroundPosition = 'center';
+                        aboutHeroSection.style.backgroundAttachment = 'fixed';
+                        console.log(`Applied background to about hero section: ${imagePath}`);
+                    }
+                }
+                
+                // Apply background images to commitment list items (Consultation, Design, Production, Delivery)
+                if (images.length > 0) {
+                    const commitmentListItems = document.querySelectorAll('.commitment-list li');
+                    commitmentListItems.forEach((item, index) => {
+                        // Cycle through available images
+                        const imageIndex = index % images.length;
+                        const imagePath = images[imageIndex].path || images[imageIndex];
+                        item.style.backgroundImage = `url('${imagePath}')`;
+                        console.log(`Applied background to commitment list item ${index + 1}: ${imagePath}`);
+                    });
+                }
             }
         }
     } catch (error) {
@@ -507,17 +535,25 @@ document.addEventListener('DOMContentLoaded', () => {
     serviceCards.forEach(card => {
         card.addEventListener('click', () => {
             const target = card.getAttribute('data-target');
-            const carouselSection = document.querySelector(`#gallery .carousel-section:nth-of-type(${getCarouselIndex(target)})`);
             
-            if (carouselSection) {
-                const headerOffset = 80;
-                const elementPosition = carouselSection.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            // Check if we're on the about page
+            if (window.location.pathname.includes('about.html')) {
+                // Navigate to main page gallery section
+                window.location.href = `index.html#gallery`;
+            } else {
+                // On main page, scroll to corresponding carousel
+                const carouselSection = document.querySelector(`#gallery .carousel-section:nth-of-type(${getCarouselIndex(target)})`);
                 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
+                if (carouselSection) {
+                    const headerOffset = 80;
+                    const elementPosition = carouselSection.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
             }
         });
     });
