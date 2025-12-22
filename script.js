@@ -170,22 +170,32 @@ async function loadSectionBackgrounds() {
                             }
                         }
                         
-                        const imagePath = images[imageIndex].path || images[imageIndex];
+                        const imageData = images[imageIndex];
+                        const imagePath = imageData.path || imageData;
+                        const fullImagePath = imagePath.startsWith('http') ? imagePath : (imagePath.startsWith('/') ? imagePath : `./${imagePath}`);
+                        
+                        console.log(`Setting hero background - Device: ${isMobileDevice ? 'mobile' : 'desktop'}, Image index: ${imageIndex}, Path: ${fullImagePath}`);
+                        
                         heroSection.style.backgroundImage = `
                             linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.5) 100%),
-                            url('${imagePath}')
+                            url('${fullImagePath}')
                         `;
                         // Set background-size based on device type
                         if (isMobileDevice) {
-                            heroSection.style.backgroundSize = '50%';
+                            heroSection.style.backgroundSize = 'cover';
                             heroSection.style.backgroundRepeat = 'no-repeat';
+                            heroSection.style.backgroundPosition = 'center center';
                         } else {
                             heroSection.style.backgroundSize = 'cover';
+                            heroSection.style.backgroundPosition = 'center';
                         }
-                        heroSection.style.backgroundPosition = 'center';
                         heroSection.style.backgroundAttachment = 'fixed';
-                        console.log(`Applied background to hero section (${isMobileDevice ? 'mobile' : 'desktop'}) - Logo/Design.Create.Repeat. area: ${imagePath}`);
+                        console.log(`✅ Applied background to hero section (${isMobileDevice ? 'mobile' : 'desktop'}) - Logo/Design.Create.Repeat. area: ${fullImagePath}`);
+                    } else {
+                        console.error('Hero section not found!');
                     }
+                } else {
+                    console.warn('No images found in Misc folder');
                 }
                 
                 // Apply second image to trust section (Bringing Your Vision to Life)
