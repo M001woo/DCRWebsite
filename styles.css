@@ -737,6 +737,8 @@ body {
     overflow-wrap: break-word;
     padding: 0;
     margin: 0;
+    white-space: normal;
+    overflow: visible;
 }
 
 .about-content {
@@ -1177,13 +1179,22 @@ body {
     .about-hero {
         padding-top: 160px;
         padding-bottom: 60px;
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 12px;
+        padding-right: 12px;
         width: 100%;
         max-width: 100vw;
         box-sizing: border-box;
         background-attachment: scroll; /* Better performance on mobile */
         margin-top: 0;
+        overflow: visible;
+    }
+    
+    .about-hero .container {
+        padding: 0 8px;
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: visible;
     }
     
     .page-title {
@@ -1193,8 +1204,12 @@ body {
         max-width: 100%;
         word-wrap: break-word;
         overflow-wrap: break-word;
-        padding: 0 8px;
+        padding: 0 4px;
+        margin: 0;
         box-sizing: border-box;
+        letter-spacing: 1px;
+        white-space: normal;
+        overflow: visible;
     }
     
     .about-content {
@@ -1435,9 +1450,18 @@ body {
     .about-hero {
         padding-top: 140px;
         padding-bottom: 40px;
-        padding-left: 12px;
-        padding-right: 12px;
+        padding-left: 8px;
+        padding-right: 8px;
         margin-top: 0;
+        overflow: visible;
+    }
+    
+    .about-hero .container {
+        padding: 0 4px;
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: visible;
     }
     
     .about-content {
@@ -1461,15 +1485,19 @@ body {
     }
     
     .page-title {
-        font-size: 26px;
+        font-size: 24px;
         text-align: center;
         width: 100%;
         max-width: 100%;
         word-wrap: break-word;
         overflow-wrap: break-word;
-        padding: 0 8px;
+        padding: 0 2px;
+        margin: 0;
         box-sizing: border-box;
         line-height: 1.2;
+        letter-spacing: 0.5px;
+        white-space: normal;
+        overflow: visible;
     }
     
     .commitment-section {
