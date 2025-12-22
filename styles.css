@@ -32,6 +32,9 @@ body {
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
     overflow-x: hidden; /* Prevent horizontal scroll */
+    width: 100%;
+    max-width: 100vw; /* Ensure body doesn't exceed viewport */
+    position: relative;
 }
 
 .container {
@@ -224,6 +227,12 @@ body {
     position: relative;
     z-index: 2;
     text-transform: uppercase;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .hero-tagline {
@@ -233,6 +242,10 @@ body {
     letter-spacing: 0.5px;
     position: relative;
     z-index: 2;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 /* Trust Section */
@@ -387,6 +400,8 @@ body {
     box-shadow: var(--shadow-lg);
     background-color: rgba(0, 0, 0, 0.5);
     border: 1px solid var(--mustard-yellow);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .carousel-track {
@@ -487,6 +502,12 @@ body {
     font-weight: 400;
     position: relative;
     z-index: 2;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .cta-button {
@@ -505,6 +526,11 @@ body {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation; /* Improve touch responsiveness */
     min-height: 44px; /* Minimum touch target size */
+    display: inline-block;
+    margin: 0 auto;
+    max-width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
 }
 
 .cta-button:hover {
@@ -880,18 +906,46 @@ body {
 
 /* Mobile devices */
 @media (max-width: 768px) {
+    html, body {
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+        position: relative;
+    }
+    
+    * {
+        max-width: 100%;
+    }
+    
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
     .container {
         padding: 0 16px;
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0 auto;
     }
     
     .header {
         padding: 12px 0;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
     }
     
     .header-content {
         flex-direction: column;
         gap: 12px;
         padding: 0 16px;
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        align-items: center;
+        text-align: center;
     }
 
     .logo-text {
@@ -914,14 +968,29 @@ body {
         padding: 100px 16px;
         padding-top: 140px;
         background-attachment: scroll; /* Better performance on mobile */
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+    
+    .hero-content {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        text-align: center;
     }
     
     .logo-container {
         margin-bottom: 12px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     
     .logo-image {
         max-width: 120px;
+        width: auto;
         height: auto;
     }
 
@@ -945,25 +1014,53 @@ body {
     .gallery-section,
     .cta-section {
         padding: 60px 16px;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
     }
     
     .trust-text {
         font-size: 16px;
         line-height: 1.7;
+        width: 100%;
+        max-width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .carousel-container {
         max-width: 100%;
+        width: 100%;
         margin: 0 auto;
+        box-sizing: border-box;
+        padding: 0 8px;
+    }
+    
+    .carousel-track {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .carousel-item {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .carousel-section {
         margin-bottom: 32px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 0;
     }
     
     .carousel-title {
         font-size: 20px;
         margin-bottom: 12px;
+        text-align: center;
+        width: 100%;
+        word-wrap: break-word;
     }
 
     .carousel-item {
@@ -994,12 +1091,21 @@ body {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
         margin-top: 32px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 0;
     }
     
     .service-card {
         font-size: 14px;
         padding: 20px 12px;
         letter-spacing: 0.5px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .features-grid {
@@ -1116,34 +1222,62 @@ body {
 
 /* Small mobile devices */
 @media (max-width: 480px) {
+    html, body {
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+    
     .container {
         padding: 0 12px;
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .hero {
+        padding: 80px 12px;
+        padding-top: 120px;
     }
     
     .hero-title {
         font-size: 28px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .hero-tagline {
         font-size: 15px;
+        word-wrap: break-word;
     }
     
     .section-title {
         font-size: 24px;
+        text-align: center;
+        word-wrap: break-word;
     }
     
     .services-grid {
         grid-template-columns: 1fr;
         gap: 12px;
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
     }
     
     .service-card {
         font-size: 15px;
         padding: 24px 16px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        word-wrap: break-word;
     }
     
     .carousel-container {
         max-width: 100%;
+        width: 100%;
+        padding: 0 4px;
     }
     
     .carousel-btn {
@@ -1166,6 +1300,8 @@ body {
     
     .nav-menu {
         gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     
     .nav-link {
@@ -1174,15 +1310,43 @@ body {
     
     .page-title {
         font-size: 28px;
+        text-align: center;
+        word-wrap: break-word;
     }
     
     .about-section h2 {
         font-size: 22px;
+        text-align: center;
+        word-wrap: break-word;
+    }
+    
+    .about-section p {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .modal-content {
         padding: 20px 16px;
         margin: 10px;
         max-width: calc(100% - 20px);
+        width: calc(100% - 20px);
+        box-sizing: border-box;
+    }
+    
+    .trust-text,
+    .cta-text {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .footer {
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+    
+    .footer p {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 }
