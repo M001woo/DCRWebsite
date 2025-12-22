@@ -726,7 +726,7 @@ body {
     font-size: 56px;
     font-weight: 800;
     letter-spacing: 2px;
-    line-height: 1.1;
+    line-height: 1.2;
     text-transform: uppercase;
     color: var(--mustard-yellow);
     text-align: center;
@@ -735,6 +735,8 @@ body {
     box-sizing: border-box;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    padding: 0;
+    margin: 0;
 }
 
 .about-content {
@@ -1173,7 +1175,7 @@ body {
     }
 
     .about-hero {
-        padding-top: 140px;
+        padding-top: 160px;
         padding-bottom: 60px;
         padding-left: 16px;
         padding-right: 16px;
@@ -1181,6 +1183,18 @@ body {
         max-width: 100vw;
         box-sizing: border-box;
         background-attachment: scroll; /* Better performance on mobile */
+        margin-top: 0;
+    }
+    
+    .page-title {
+        font-size: 32px;
+        text-align: center;
+        width: 100%;
+        max-width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        padding: 0 8px;
+        box-sizing: border-box;
     }
     
     .about-content {
@@ -1419,10 +1433,11 @@ body {
     }
     
     .about-hero {
-        padding-top: 120px;
+        padding-top: 140px;
         padding-bottom: 40px;
         padding-left: 12px;
         padding-right: 12px;
+        margin-top: 0;
     }
     
     .about-content {
@@ -1446,7 +1461,15 @@ body {
     }
     
     .page-title {
-        font-size: 28px;
+        font-size: 26px;
+        text-align: center;
+        width: 100%;
+        max-width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        padding: 0 8px;
+        box-sizing: border-box;
+        line-height: 1.2;
     }
     
     .commitment-section {
