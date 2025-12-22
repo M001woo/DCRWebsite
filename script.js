@@ -155,47 +155,20 @@ async function loadSectionBackgrounds() {
             if (manifest.misc && manifest.misc.length > 0) {
                 const images = manifest.misc;
                 
-                // Apply background image to hero section (logo and "Design.Create.Repeat." area)
+                // Apply first image to hero section
                 if (images.length > 0) {
                     const heroSection = document.querySelector('.hero');
-                    if (heroSection) {
-                        // Use different image for mobile vs desktop
-                        let imageIndex = 0; // Default: first image for desktop
-                        if (isMobileDevice) {
-                            // For mobile, use the third image (index 2) if available, otherwise second (index 1)
-                            if (images.length > 2) {
-                                imageIndex = 2; // Use third image for mobile
-                            } else if (images.length > 1) {
-                                imageIndex = 1; // Use second image for mobile
-                            }
-                        }
-                        
-                        const imageData = images[imageIndex];
-                        const imagePath = imageData.path || imageData;
-                        const fullImagePath = imagePath.startsWith('http') ? imagePath : (imagePath.startsWith('/') ? imagePath : `./${imagePath}`);
-                        
-                        console.log(`Setting hero background - Device: ${isMobileDevice ? 'mobile' : 'desktop'}, Image index: ${imageIndex}, Path: ${fullImagePath}`);
-                        
+                    if (heroSection && images[0]) {
+                        const imagePath = images[0].path || images[0];
                         heroSection.style.backgroundImage = `
                             linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.5) 100%),
-                            url('${fullImagePath}')
+                            url('${imagePath}')
                         `;
-                        // Set background-size based on device type
-                        if (isMobileDevice) {
-                            heroSection.style.backgroundSize = 'cover';
-                            heroSection.style.backgroundRepeat = 'no-repeat';
-                            heroSection.style.backgroundPosition = 'center center';
-                        } else {
-                            heroSection.style.backgroundSize = 'cover';
-                            heroSection.style.backgroundPosition = 'center';
-                        }
+                        heroSection.style.backgroundSize = 'cover';
+                        heroSection.style.backgroundPosition = 'center';
                         heroSection.style.backgroundAttachment = 'fixed';
-                        console.log(`✅ Applied background to hero section (${isMobileDevice ? 'mobile' : 'desktop'}) - Logo/Design.Create.Repeat. area: ${fullImagePath}`);
-                    } else {
-                        console.error('Hero section not found!');
+                        console.log(`Applied background to hero: ${imagePath}`);
                     }
-                } else {
-                    console.warn('No images found in Misc folder');
                 }
                 
                 // Apply second image to trust section (Bringing Your Vision to Life)

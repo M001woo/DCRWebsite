@@ -1021,8 +1021,6 @@ body {
         width: 100%;
         max-width: 100vw;
         box-sizing: border-box;
-        background-size: 50% !important;
-        background-repeat: no-repeat;
     }
     
     .hero-content {
@@ -1379,8 +1377,6 @@ body {
     .hero {
         padding: 80px 12px;
         padding-top: 120px;
-        background-size: 50% !important;
-        background-repeat: no-repeat;
     }
     
     .hero-title {
