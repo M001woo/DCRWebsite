@@ -164,7 +164,13 @@ async function loadSectionBackgrounds() {
                             linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.5) 100%),
                             url('${imagePath}')
                         `;
-                        // Don't set background-size inline - let CSS handle it (especially for mobile)
+                        // Set background-size based on device type
+                        if (isMobileDevice) {
+                            heroSection.style.backgroundSize = '50%';
+                            heroSection.style.backgroundRepeat = 'no-repeat';
+                        } else {
+                            heroSection.style.backgroundSize = 'cover';
+                        }
                         heroSection.style.backgroundPosition = 'center';
                         heroSection.style.backgroundAttachment = 'fixed';
                         console.log(`Applied background to hero: ${imagePath}`);
