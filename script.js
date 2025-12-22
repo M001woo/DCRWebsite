@@ -92,6 +92,16 @@ class Carousel {
 
 // Background images removed - using solid colors only
 
+// Shuffle array function (Fisher-Yates algorithm)
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
 // Load background images from Misc folder for specific sections
 async function loadSectionBackgrounds() {
     try {
@@ -264,8 +274,10 @@ async function loadCarouselImages(category) {
         if (response.ok) {
             const manifest = await response.json();
             if (manifest[category] && manifest[category].length > 0) {
+                // Randomize the order of images before adding to carousel
+                const shuffledImages = shuffleArray(manifest[category]);
                 // Use Promise.all to handle async HEIC conversion
-                await Promise.all(manifest[category].map(imageData => 
+                await Promise.all(shuffledImages.map(imageData => 
                     addImageToCarousel(category, imageData.path, imageData.alt)
                 ));
                 return; // Successfully loaded from manifest
@@ -282,6 +294,7 @@ async function loadCarouselImages(category) {
     
     let loadedCount = 0;
     const loadedPaths = new Set(); // Track loaded images to avoid duplicates
+    const foundImages = []; // Collect all found images first, then shuffle
     
     // Try multiple naming patterns
     const namingPatterns = [
@@ -313,7 +326,7 @@ async function loadCarouselImages(category) {
                     try {
                         const response = await fetch(imagePath);
                         if (response.ok) {
-                            addImageToCarousel(category, imagePath, `${category} product ${i}`);
+                            foundImages.push({ path: imagePath, alt: `${category} product ${i}` });
                             loadedPaths.add(imagePath);
                             loadedCount++;
                         }
@@ -335,13 +348,21 @@ async function loadCarouselImages(category) {
                     });
                     
                     if (imageLoaded) {
-                        addImageToCarousel(category, imagePath, `${category} product ${i}`);
+                        foundImages.push({ path: imagePath, alt: `${category} product ${i}` });
                         loadedPaths.add(imagePath);
                         loadedCount++;
                     }
                 }
             }
         }
+    }
+    
+    // Randomize and add all found images to carousel
+    if (foundImages.length > 0) {
+        const shuffledImages = shuffleArray(foundImages);
+        await Promise.all(shuffledImages.map(imageData => 
+            addImageToCarousel(category, imageData.path, imageData.alt)
+        ));
     }
     
     // If no images were loaded, show placeholder

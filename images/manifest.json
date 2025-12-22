@@ -5,10 +5,6 @@
       "alt": "signs - IMG 0663"
     },
     {
-      "path": "images/signs/MKX05268.jpg",
-      "alt": "signs - MKX05268"
-    },
-    {
       "path": "images/signs/MKX05304.jpg",
       "alt": "signs - MKX05304"
     }
@@ -76,7 +72,12 @@
       "alt": "custom - MKX05412"
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "path": "images/events/MKX05268.jpg",
+      "alt": "events - MKX05268"
+    }
+  ],
   "signs-bg": [
     {
       "path": "images/service-signs/ChatGPT Image Dec 21, 2025 at 02_33_27 PM.png",
@@ -101,7 +102,12 @@
       "alt": "personalized-bg - ChatGPT Image Dec 21, 2025 at 02 55 48 PM"
     }
   ],
-  "stickers-bg": [],
+  "stickers-bg": [
+    {
+      "path": "images/service-stickers/ChatGPT Image Dec 21, 2025 at 08_06_24 PM.png",
+      "alt": "stickers-bg - ChatGPT Image Dec 21, 2025 at 08 06 24 PM"
+    }
+  ],
   "stencils-bg": [
     {
       "path": "images/service-stencils/ChatGPT Image Dec 21, 2025 at 02_19_03 PM.png",
