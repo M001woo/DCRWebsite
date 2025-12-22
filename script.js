@@ -155,11 +155,17 @@ async function loadSectionBackgrounds() {
             if (manifest.misc && manifest.misc.length > 0) {
                 const images = manifest.misc;
                 
-                // Apply first image to hero section
+                // Apply first image to hero section (desktop) or second image (mobile)
                 if (images.length > 0) {
                     const heroSection = document.querySelector('.hero');
-                    if (heroSection && images[0]) {
-                        const imagePath = images[0].path || images[0];
+                    if (heroSection) {
+                        // Use different image for mobile vs desktop
+                        let imageIndex = 0;
+                        if (isMobileDevice && images.length > 1) {
+                            imageIndex = 1; // Use second image for mobile
+                        }
+                        
+                        const imagePath = images[imageIndex].path || images[imageIndex];
                         heroSection.style.backgroundImage = `
                             linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.5) 100%),
                             url('${imagePath}')
@@ -173,7 +179,7 @@ async function loadSectionBackgrounds() {
                         }
                         heroSection.style.backgroundPosition = 'center';
                         heroSection.style.backgroundAttachment = 'fixed';
-                        console.log(`Applied background to hero: ${imagePath}`);
+                        console.log(`Applied background to hero (${isMobileDevice ? 'mobile' : 'desktop'}): ${imagePath}`);
                     }
                 }
                 
