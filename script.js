@@ -1,3 +1,41 @@
+// Detect mobile device
+const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// Global error handler to prevent page crashes
+let errorCount = 0;
+const MAX_ERRORS = 10;
+
+window.addEventListener('error', function(event) {
+    errorCount++;
+    console.error('Global error caught:', event.error);
+    
+    // If too many errors, disable problematic features
+    if (errorCount > MAX_ERRORS) {
+        console.warn('Too many errors detected, disabling advanced features');
+        // Disable carousel auto-play
+        document.querySelectorAll('.carousel-container').forEach(container => {
+            container.style.pointerEvents = 'none';
+        });
+    }
+    
+    // Prevent the error from breaking the page
+    event.preventDefault();
+    return true;
+});
+
+window.addEventListener('unhandledrejection', function(event) {
+    errorCount++;
+    console.error('Unhandled promise rejection:', event.reason);
+    
+    // If too many errors, disable problematic features
+    if (errorCount > MAX_ERRORS) {
+        console.warn('Too many promise rejections, disabling advanced features');
+    }
+    
+    // Prevent the rejection from breaking the page
+    event.preventDefault();
+});
+
 // Carousel functionality
 class Carousel {
     constructor(carouselId) {
@@ -35,14 +73,20 @@ class Carousel {
     }
     
     init() {
-        // Set up auto-play
-        this.startAutoPlay();
-        
-        // Pause on hover - find the container parent
-        const container = this.track.closest('.carousel-container');
-        if (container) {
-            container.addEventListener('mouseenter', () => this.stopAutoPlay());
-            container.addEventListener('mouseleave', () => this.startAutoPlay());
+        // Only auto-play on desktop - disable on mobile to prevent issues
+        if (!isMobileDevice) {
+            // Set up auto-play
+            this.startAutoPlay();
+            
+            // Pause on hover - find the container parent (desktop only)
+            const container = this.track.closest('.carousel-container');
+            if (container) {
+                container.addEventListener('mouseenter', () => this.stopAutoPlay());
+                container.addEventListener('mouseleave', () => this.startAutoPlay());
+            }
+        } else {
+            // On mobile, just show the first image, no auto-play
+            console.log('Mobile device detected - auto-play disabled for carousel');
         }
     }
     
@@ -237,84 +281,151 @@ async function loadServiceCardBackgrounds() {
 
 // Initialize carousels when DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
-    // Load background images first
-    await loadSectionBackgrounds();
-    
-    // Load service card backgrounds
-    await loadServiceCardBackgrounds();
-    
-    // Load images for each carousel category
-    const categories = ['signs', 'jewelry', 'decor', 'personalized', 'stickers', 'stencils', 'custom', 'events'];
-    
-    // Load all images
-    await Promise.all(categories.map(category => loadCarouselImages(category)));
-    
-    // Wait a bit for images to render, then initialize carousels
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Initialize carousels after images are loaded
-    categories.forEach(category => {
-        const carouselId = `${category}-carousel`;
-        const carouselTrack = document.getElementById(carouselId);
-        if (carouselTrack) {
-            // Only initialize if there are actual images (not just placeholder)
-            const images = carouselTrack.querySelectorAll('.carousel-item');
-            const hasImages = images.length > 0;
-            
-            if (hasImages) {
-                console.log(`Found ${images.length} images for ${category}, initializing carousel...`);
-                // Wait for images to fully load - check img elements inside carousel-item divs
-                const imagePromises = Array.from(images).map(item => {
-                    const img = item.querySelector('img') || item;
-                    if (img.tagName === 'IMG' && img.complete && img.naturalWidth > 0) return Promise.resolve();
-                    if (img.tagName === 'IMG') {
-                        return new Promise((resolve) => {
-                            img.onload = resolve;
-                            img.onerror = resolve; // Continue even if some images fail
-                            setTimeout(resolve, 3000); // Timeout after 3 seconds
-                        });
-                    }
-                    return Promise.resolve(); // For placeholders or non-img elements
-                });
-                
-                Promise.all(imagePromises).then(() => {
-                    console.log(`Initializing carousel for ${category}`);
-                    carousels[category] = new Carousel(carouselId);
-                });
-            } else {
-                console.log(`No images found for ${category}`);
-            }
+    try {
+        // Load background images first
+        try {
+            await loadSectionBackgrounds();
+        } catch (error) {
+            console.error('Error loading section backgrounds:', error);
         }
-    });
-    
-    // Set up carousel navigation buttons
-    setupCarouselButtons();
+        
+        // Load service card backgrounds
+        try {
+            await loadServiceCardBackgrounds();
+        } catch (error) {
+            console.error('Error loading service card backgrounds:', error);
+        }
+        
+        // Load images for each carousel category
+        const categories = ['signs', 'jewelry', 'decor', 'personalized', 'stickers', 'stencils', 'custom', 'events'];
+        
+        // Load all images with error handling for each category
+        try {
+            await Promise.allSettled(categories.map(category => 
+                loadCarouselImages(category).catch(error => {
+                    console.error(`Error loading images for ${category}:`, error);
+                    return null; // Continue even if one category fails
+                })
+            ));
+        } catch (error) {
+            console.error('Error loading carousel images:', error);
+        }
+        
+        // On mobile, use shorter timeout and simpler initialization
+        const waitTime = isMobileDevice ? 200 : 500;
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+        
+        // Initialize carousels after images are loaded
+        categories.forEach(category => {
+            try {
+                const carouselId = `${category}-carousel`;
+                const carouselTrack = document.getElementById(carouselId);
+                if (carouselTrack) {
+                    // Only initialize if there are actual images (not just placeholder)
+                    const images = carouselTrack.querySelectorAll('.carousel-item');
+                    const hasImages = images.length > 0;
+                    
+                    if (hasImages) {
+                        console.log(`Found ${images.length} images for ${category}, initializing carousel...`);
+                        
+                        // On mobile, skip waiting for all images to load - just initialize immediately
+                        if (isMobileDevice) {
+                            try {
+                                // Simple initialization on mobile - no waiting
+                                setTimeout(() => {
+                                    try {
+                                        carousels[category] = new Carousel(carouselId);
+                                    } catch (error) {
+                                        console.error(`Error initializing carousel for ${category}:`, error);
+                                    }
+                                }, 100);
+                            } catch (error) {
+                                console.error(`Error setting up carousel for ${category}:`, error);
+                            }
+                        } else {
+                            // Desktop: Wait for images to fully load
+                            const imagePromises = Array.from(images).map(item => {
+                                try {
+                                    const img = item.querySelector('img') || item;
+                                    if (img.tagName === 'IMG' && img.complete && img.naturalWidth > 0) return Promise.resolve();
+                                    if (img.tagName === 'IMG') {
+                                        return new Promise((resolve) => {
+                                            img.onload = resolve;
+                                            img.onerror = resolve; // Continue even if some images fail
+                                            setTimeout(resolve, 3000); // Timeout after 3 seconds
+                                        });
+                                    }
+                                    return Promise.resolve(); // For placeholders or non-img elements
+                                } catch (error) {
+                                    console.error(`Error processing image in ${category}:`, error);
+                                    return Promise.resolve(); // Continue even on error
+                                }
+                            });
+                            
+                            Promise.all(imagePromises).then(() => {
+                                try {
+                                    console.log(`Initializing carousel for ${category}`);
+                                    carousels[category] = new Carousel(carouselId);
+                                } catch (error) {
+                                    console.error(`Error initializing carousel for ${category}:`, error);
+                                }
+                            }).catch(error => {
+                                console.error(`Error waiting for images in ${category}:`, error);
+                            });
+                        }
+                    } else {
+                        console.log(`No images found for ${category}`);
+                    }
+                }
+            } catch (error) {
+                console.error(`Error setting up carousel for ${category}:`, error);
+            }
+        });
+        
+        // Set up carousel navigation buttons
+        try {
+            setupCarouselButtons();
+        } catch (error) {
+            console.error('Error setting up carousel buttons:', error);
+        }
+    } catch (error) {
+        console.error('Critical error during page initialization:', error);
+        // Ensure page content is still visible even if JavaScript fails
+        document.body.style.display = 'block';
+    }
 });
 
 // Load images from folder for each category
 async function loadCarouselImages(category) {
-    const carouselTrack = document.getElementById(`${category}-carousel`);
-    if (!carouselTrack) return;
-    
-    // First, try to load from manifest.json (best method)
     try {
-        const response = await fetch(`images/manifest.json`);
-        if (response.ok) {
-            const manifest = await response.json();
-            if (manifest[category] && manifest[category].length > 0) {
-                // Randomize the order of images before adding to carousel
-                const shuffledImages = shuffleArray(manifest[category]);
-                // Use Promise.all to handle async HEIC conversion
-                await Promise.all(shuffledImages.map(imageData => 
-                    addImageToCarousel(category, imageData.path, imageData.alt)
-                ));
-                return; // Successfully loaded from manifest
-            }
+        const carouselTrack = document.getElementById(`${category}-carousel`);
+        if (!carouselTrack) {
+            console.warn(`Carousel track not found for category: ${category}`);
+            return;
         }
-    } catch (error) {
-        // Manifest doesn't exist or failed to load, try alternative method
-        console.log(`Manifest not found for ${category}, trying alternative loading...`);
-    }
+        
+        // First, try to load from manifest.json (best method)
+        try {
+            const response = await fetch(`images/manifest.json`);
+            if (response.ok) {
+                const manifest = await response.json();
+                if (manifest[category] && manifest[category].length > 0) {
+                    // Randomize the order of images before adding to carousel
+                    const shuffledImages = shuffleArray(manifest[category]);
+                    // Use Promise.allSettled to handle async HEIC conversion - continue even if some fail
+                    await Promise.allSettled(shuffledImages.map(imageData => 
+                        addImageToCarousel(category, imageData.path, imageData.alt).catch(error => {
+                            console.error(`Error adding image ${imageData.path} to ${category}:`, error);
+                            return null; // Continue even if one image fails
+                        })
+                    ));
+                    return; // Successfully loaded from manifest
+                }
+            }
+        } catch (error) {
+            // Manifest doesn't exist or failed to load, try alternative method
+            console.log(`Manifest not found for ${category}, trying alternative loading...`, error);
+        }
     
     // Alternative: Try multiple naming patterns to find images
     const commonExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif', '.JPG', '.JPEG', '.PNG', '.WEBP', '.HEIC', '.HEIF'];
@@ -413,6 +524,10 @@ async function loadCarouselImages(category) {
         `;
         placeholder.innerHTML = `Add images to images/${category}/ folder<br><small style="font-size: 14px; margin-top: 10px; display: block;">Supported: image1.jpg, ${category}1.jpg, 1.jpg, etc.<br>Or run: node generate-manifest.js</small>`;
         carouselTrack.appendChild(placeholder);
+    }
+    } catch (error) {
+        console.error(`Error in loadCarouselImages for ${category}:`, error);
+        // Ensure the page doesn't break - continue execution
     }
 }
 
@@ -600,27 +715,60 @@ async function convertHeicToWebFormat(heicFile) {
     try {
         // Check if heic2any is available
         if (typeof heic2any === 'undefined') {
-            console.error('heic2any library not loaded, cannot convert HEIC files');
+            console.warn('heic2any library not loaded, skipping HEIC conversion');
+            return null;
+        }
+        
+        // This function should never be called on mobile (checked earlier), but double-check
+        if (isMobileDevice) {
+            console.warn('HEIC conversion skipped on mobile devices:', heicFile);
             return null;
         }
         
         console.log(`Fetching HEIC file: ${heicFile}`);
-        // Fetch the HEIC file as a blob
-        const response = await fetch(heicFile);
+        // Fetch the HEIC file as a blob with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
+        let response;
+        try {
+            response = await fetch(heicFile, { signal: controller.signal });
+            clearTimeout(timeoutId);
+        } catch (fetchError) {
+            clearTimeout(timeoutId);
+            if (fetchError.name === 'AbortError') {
+                console.error(`Timeout fetching HEIC file: ${heicFile}`);
+            } else {
+                console.error(`Error fetching HEIC file: ${heicFile}`, fetchError);
+            }
+            return null;
+        }
+        
         if (!response.ok) {
             console.error(`Failed to fetch HEIC file: ${heicFile} - Status: ${response.status}`);
             return null;
         }
+        
         const blob = await response.blob();
+        if (blob.size === 0) {
+            console.error(`Empty blob for HEIC file: ${heicFile}`);
+            return null;
+        }
         console.log(`Fetched blob for ${heicFile}, size: ${blob.size} bytes`);
         
-        // Convert HEIC to JPEG
+        // Convert HEIC to JPEG with timeout
         console.log(`Starting HEIC conversion for: ${heicFile}`);
-        const convertedBlob = await heic2any({
+        const conversionPromise = heic2any({
             blob: blob,
             toType: 'image/jpeg',
             quality: 0.9
         });
+        
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('HEIC conversion timeout')), 15000)
+        );
+        
+        const convertedBlob = await Promise.race([conversionPromise, timeoutPromise]);
         
         // heic2any returns an array, get the first item
         const jpegBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
@@ -675,8 +823,15 @@ async function addImageToCarousel(category, imagePath, altText = '') {
     img.alt = altText || `${category} product`;
     img.loading = 'lazy';
     
-    // Handle HEIC files
+    // Handle HEIC files - skip entirely on mobile
     if (isHeicFile(imagePath)) {
+        if (isMobileDevice) {
+            // On mobile, skip HEIC files completely to prevent crashes
+            console.warn(`Skipping HEIC file on mobile: ${imagePath}`);
+            imgWrapper.style.display = 'none';
+            return; // Don't add to carousel
+        }
+        
         console.log(`Converting HEIC file: ${imagePath}`);
         try {
             const convertedUrl = await convertHeicToWebFormat(imagePath);
