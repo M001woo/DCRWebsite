@@ -474,7 +474,7 @@ if (contactForm) {
         
         // Create mailto link
         const emailBody = `Name: ${name}%0D%0AEmail: ${email}%0D%0APhone: ${phone}%0D%0A%0D%0AMessage:%0D%0A${message}`;
-        const mailtoLink = `mailto:your-email@example.com?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
+        const mailtoLink = `mailto:thedcrcompany@gmail.com?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
         
         // Open email client
         window.location.href = mailtoLink;

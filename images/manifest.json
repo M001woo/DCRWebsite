@@ -60,10 +60,6 @@
   "stencils": [],
   "custom": [
     {
-      "path": "images/custom/IMG_7840 2.heic",
-      "alt": "custom - IMG 7840 2"
-    },
-    {
       "path": "images/custom/MKX05406.jpg",
       "alt": "custom - MKX05406"
     },
@@ -73,6 +69,10 @@
     }
   ],
   "events": [
+    {
+      "path": "images/events/IMG_7840 2.heic",
+      "alt": "events - IMG 7840 2"
+    },
     {
       "path": "images/events/MKX05268.jpg",
       "alt": "events - MKX05268"
