@@ -155,14 +155,19 @@ async function loadSectionBackgrounds() {
             if (manifest.misc && manifest.misc.length > 0) {
                 const images = manifest.misc;
                 
-                // Apply first image to hero section (desktop) or second image (mobile)
+                // Apply background image to hero section (logo and "Design.Create.Repeat." area)
                 if (images.length > 0) {
                     const heroSection = document.querySelector('.hero');
                     if (heroSection) {
                         // Use different image for mobile vs desktop
-                        let imageIndex = 0;
-                        if (isMobileDevice && images.length > 1) {
-                            imageIndex = 1; // Use second image for mobile
+                        let imageIndex = 0; // Default: first image for desktop
+                        if (isMobileDevice) {
+                            // For mobile, use the third image (index 2) if available, otherwise second (index 1)
+                            if (images.length > 2) {
+                                imageIndex = 2; // Use third image for mobile
+                            } else if (images.length > 1) {
+                                imageIndex = 1; // Use second image for mobile
+                            }
                         }
                         
                         const imagePath = images[imageIndex].path || images[imageIndex];
@@ -179,7 +184,7 @@ async function loadSectionBackgrounds() {
                         }
                         heroSection.style.backgroundPosition = 'center';
                         heroSection.style.backgroundAttachment = 'fixed';
-                        console.log(`Applied background to hero (${isMobileDevice ? 'mobile' : 'desktop'}): ${imagePath}`);
+                        console.log(`Applied background to hero section (${isMobileDevice ? 'mobile' : 'desktop'}) - Logo/Design.Create.Repeat. area: ${imagePath}`);
                     }
                 }
                 
