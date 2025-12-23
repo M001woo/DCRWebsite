@@ -206,18 +206,23 @@ async function loadSectionBackgrounds() {
                         const imagePath = imageData.path || imageData;
                         const fullImagePath = imagePath.startsWith('http') ? imagePath : (imagePath.startsWith('/') ? imagePath : `./${imagePath}`);
                         
-                        trustSection.style.backgroundImage = `
-                            linear-gradient(135deg, rgba(50, 50, 50, 0.7) 0%, rgba(40, 40, 40, 0.6) 100%),
-                            url('${fullImagePath}')
-                        `;
-                        
                         // Set background-size and position based on device type
                         if (isMobileDevice) {
-                            trustSection.style.backgroundSize = '225% auto';
+                            // Mobile: darker overlay (10% more opacity) and ensure it covers full height
+                            trustSection.style.backgroundImage = `
+                                linear-gradient(135deg, rgba(50, 50, 50, 0.77) 0%, rgba(40, 40, 40, 0.66) 100%),
+                                url('${fullImagePath}')
+                            `;
+                            trustSection.style.backgroundSize = '225% auto, 225% auto';
                             trustSection.style.backgroundPosition = 'center calc(50% - 50px)';
                             trustSection.style.backgroundAttachment = 'scroll';
                             trustSection.style.backgroundRepeat = 'no-repeat';
                         } else {
+                            // Desktop: original overlay
+                            trustSection.style.backgroundImage = `
+                                linear-gradient(135deg, rgba(50, 50, 50, 0.7) 0%, rgba(40, 40, 40, 0.6) 100%),
+                                url('${fullImagePath}')
+                            `;
                             trustSection.style.backgroundSize = 'cover';
                             trustSection.style.backgroundPosition = 'center';
                             trustSection.style.backgroundAttachment = 'fixed';

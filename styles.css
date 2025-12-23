@@ -1076,6 +1076,8 @@ body {
         background-position: calc(50% - 50px) center;
         background-attachment: scroll;
         background-repeat: no-repeat;
+        min-height: 100%;
+        background-size: cover, 225% auto;
     }
     
     .trust-text {
@@ -1410,6 +1412,8 @@ body {
         background-position: calc(50% - 50px) center;
         background-attachment: scroll;
         background-repeat: no-repeat;
+        min-height: 100%;
+        background-size: cover, 225% auto;
     }
     
     .services-grid {
