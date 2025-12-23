@@ -188,11 +188,21 @@ async function loadSectionBackgrounds() {
                     }
                 }
                 
-                // Apply second image to trust section (Bringing Your Vision to Life)
-                if (images.length > 1) {
-                    const trustSection = document.querySelector('.trust-section');
-                    if (trustSection && images[1]) {
-                        const imageData = images[1];
+                // Apply image to trust section (Bringing Your Vision to Life)
+                // Use first image on mobile, second image on desktop
+                const trustSection = document.querySelector('.trust-section');
+                if (trustSection) {
+                    let imageIndex = 1; // Default: second image for desktop
+                    if (isMobileDevice && images.length > 0) {
+                        imageIndex = 0; // First image for mobile
+                    } else if (!isMobileDevice && images.length > 1) {
+                        imageIndex = 1; // Second image for desktop
+                    } else if (images.length > 0) {
+                        imageIndex = 0; // Fallback to first image
+                    }
+                    
+                    if (images[imageIndex]) {
+                        const imageData = images[imageIndex];
                         const imagePath = imageData.path || imageData;
                         const fullImagePath = imagePath.startsWith('http') ? imagePath : (imagePath.startsWith('/') ? imagePath : `./${imagePath}`);
                         
@@ -204,7 +214,7 @@ async function loadSectionBackgrounds() {
                         // Set background-size and position based on device type
                         if (isMobileDevice) {
                             trustSection.style.backgroundSize = '100% auto';
-                            trustSection.style.backgroundPosition = 'calc(50% - 50px) center';
+                            trustSection.style.backgroundPosition = 'center center';
                             trustSection.style.backgroundAttachment = 'scroll';
                             trustSection.style.backgroundRepeat = 'no-repeat';
                         } else {
@@ -213,7 +223,7 @@ async function loadSectionBackgrounds() {
                             trustSection.style.backgroundAttachment = 'fixed';
                         }
                         
-                        console.log(`Applied background to trust section (${isMobileDevice ? 'mobile' : 'desktop'}): ${fullImagePath}`);
+                        console.log(`Applied background to trust section (${isMobileDevice ? 'mobile' : 'desktop'}, image ${imageIndex}): ${fullImagePath}`);
                     }
                 }
                 
