@@ -214,7 +214,7 @@ async function loadSectionBackgrounds() {
                                 url('${fullImagePath}')
                             `;
                             trustSection.style.backgroundSize = 'cover, 225% auto';
-                            trustSection.style.backgroundPosition = 'center calc(50% + 25px), center calc(50% - 50px)';
+                            trustSection.style.backgroundPosition = 'center calc(50% + 5px), center calc(50% - 50px)';
                             trustSection.style.backgroundAttachment = 'scroll';
                             trustSection.style.backgroundRepeat = 'no-repeat';
                         } else {
