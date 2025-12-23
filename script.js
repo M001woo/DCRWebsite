@@ -801,28 +801,39 @@ async function addImageToCarousel(category, imagePath, altText = '') {
     
     // Handle HEIC files - skip entirely on mobile
     if (isHeicFile(imagePath)) {
-        if (isMobileDevice) {
-            // On mobile, skip HEIC files completely to prevent crashes
-            console.warn(`Skipping HEIC file on mobile: ${imagePath}`);
+        // Check if device is iOS (which natively supports HEIC)
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        
+        if (isMobileDevice && !isIOS) {
+            // On non-iOS mobile, skip HEIC files to prevent crashes
+            console.warn(`Skipping HEIC file on non-iOS mobile: ${imagePath}`);
             imgWrapper.style.display = 'none';
             return; // Don't add to carousel
         }
         
-        console.log(`Converting HEIC file: ${imagePath}`);
-        try {
-            const convertedUrl = await convertHeicToWebFormat(imagePath);
-            if (convertedUrl) {
-                img.src = convertedUrl;
-                console.log(`Successfully converted and loaded HEIC: ${imagePath}`);
-            } else {
-                console.error(`Failed to convert HEIC file: ${imagePath} - conversion returned null`);
+        if (isIOS) {
+            // iOS devices can display HEIC files natively - try loading directly
+            console.log(`Attempting to load HEIC file directly on iOS: ${imagePath}`);
+            img.src = imagePath;
+            // Error handling is done in img.onerror below
+        } else {
+            // Desktop: convert HEIC files
+            console.log(`Converting HEIC file: ${imagePath}`);
+            try {
+                const convertedUrl = await convertHeicToWebFormat(imagePath);
+                if (convertedUrl) {
+                    img.src = convertedUrl;
+                    console.log(`Successfully converted and loaded HEIC: ${imagePath}`);
+                } else {
+                    console.error(`Failed to convert HEIC file: ${imagePath} - conversion returned null`);
+                    imgWrapper.style.display = 'none';
+                    return; // Don't add to carousel if conversion failed
+                }
+            } catch (error) {
+                console.error(`Error processing HEIC file ${imagePath}:`, error);
                 imgWrapper.style.display = 'none';
-                return; // Don't add to carousel if conversion failed
+                return; // Don't add to carousel if error occurred
             }
-        } catch (error) {
-            console.error(`Error processing HEIC file ${imagePath}:`, error);
-            imgWrapper.style.display = 'none';
-            return; // Don't add to carousel if error occurred
         }
     } else {
         img.src = imagePath;
