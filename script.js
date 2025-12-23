@@ -213,7 +213,7 @@ async function loadSectionBackgrounds() {
                         
                         // Set background-size and position based on device type
                         if (isMobileDevice) {
-                            trustSection.style.backgroundSize = '150% auto';
+                            trustSection.style.backgroundSize = '225% auto';
                             trustSection.style.backgroundPosition = 'center calc(50% - 50px)';
                             trustSection.style.backgroundAttachment = 'scroll';
                             trustSection.style.backgroundRepeat = 'no-repeat';
