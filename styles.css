@@ -264,7 +264,7 @@ body {
 
 .trust-section .container {
     position: relative;
-    z-index: 2;
+    z-index: 10;
 }
 
 .section-title {
@@ -273,6 +273,8 @@ body {
     margin-bottom: 24px;
     color: var(--mustard-yellow);
     letter-spacing: 1px;
+    position: relative;
+    z-index: 10;
     line-height: 1.2;
     text-transform: uppercase;
     position: relative;
