@@ -1070,9 +1070,10 @@ body {
     }
     
     .trust-section {
-        background-size: cover;
+        background-size: 50%;
         background-position: center;
         background-attachment: scroll;
+        background-repeat: no-repeat;
     }
     
     .trust-text {
@@ -1403,9 +1404,10 @@ body {
     }
     
     .trust-section {
-        background-size: cover;
+        background-size: 50%;
         background-position: center;
         background-attachment: scroll;
+        background-repeat: no-repeat;
     }
     
     .services-grid {
