@@ -213,8 +213,8 @@ async function loadSectionBackgrounds() {
                                 linear-gradient(135deg, rgba(50, 50, 50, 0.77) 0%, rgba(40, 40, 40, 0.66) 100%),
                                 url('${fullImagePath}')
                             `;
-                            trustSection.style.backgroundSize = '225% auto, 225% auto';
-                            trustSection.style.backgroundPosition = 'center calc(50% - 50px)';
+                            trustSection.style.backgroundSize = 'cover, 225% auto';
+                            trustSection.style.backgroundPosition = 'center calc(50% + 50px), center calc(50% - 50px)';
                             trustSection.style.backgroundAttachment = 'scroll';
                             trustSection.style.backgroundRepeat = 'no-repeat';
                         } else {
