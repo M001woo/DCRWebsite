@@ -1071,7 +1071,7 @@ body {
     
     .trust-section {
         background-size: 50%;
-        background-position: center;
+        background-position: calc(50% - 50px) center;
         background-attachment: scroll;
         background-repeat: no-repeat;
     }
@@ -1405,7 +1405,7 @@ body {
     
     .trust-section {
         background-size: 50%;
-        background-position: center;
+        background-position: calc(50% - 50px) center;
         background-attachment: scroll;
         background-repeat: no-repeat;
     }
