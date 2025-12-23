@@ -1069,6 +1069,12 @@ body {
         box-sizing: border-box;
     }
     
+    .trust-section {
+        background-size: 50% !important;
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+    }
+    
     .trust-text {
         font-size: 16px;
         line-height: 1.7;
@@ -1394,6 +1400,12 @@ body {
         font-size: 24px;
         text-align: center;
         word-wrap: break-word;
+    }
+    
+    .trust-section {
+        background-size: 50% !important;
+        background-repeat: no-repeat;
+        background-attachment: scroll;
     }
     
     .services-grid {
