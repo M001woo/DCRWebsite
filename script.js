@@ -155,19 +155,36 @@ async function loadSectionBackgrounds() {
             if (manifest.misc && manifest.misc.length > 0) {
                 const images = manifest.misc;
                 
-                // Apply first image to hero section
+                // Apply background image to hero section (logo and "Design.Create.Repeat." area)
                 if (images.length > 0) {
                     const heroSection = document.querySelector('.hero');
-                    if (heroSection && images[0]) {
-                        const imagePath = images[0].path || images[0];
+                    if (heroSection) {
+                        // Use different image for mobile vs desktop
+                        let imageIndex = 0; // Default: first image for desktop
+                        if (isMobileDevice && images.length > 1) {
+                            // For mobile, use the second image (index 1) if available
+                            imageIndex = 1;
+                        }
+                        
+                        const imageData = images[imageIndex];
+                        const imagePath = imageData.path || imageData;
+                        const fullImagePath = imagePath.startsWith('http') ? imagePath : (imagePath.startsWith('/') ? imagePath : `./${imagePath}`);
+                        
                         heroSection.style.backgroundImage = `
                             linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.5) 100%),
-                            url('${imagePath}')
+                            url('${fullImagePath}')
                         `;
                         heroSection.style.backgroundSize = 'cover';
                         heroSection.style.backgroundPosition = 'center';
-                        heroSection.style.backgroundAttachment = 'fixed';
-                        console.log(`Applied background to hero: ${imagePath}`);
+                        
+                        // Use scroll attachment on mobile for better performance
+                        if (isMobileDevice) {
+                            heroSection.style.backgroundAttachment = 'scroll';
+                        } else {
+                            heroSection.style.backgroundAttachment = 'fixed';
+                        }
+                        
+                        console.log(`Applied background to hero (${isMobileDevice ? 'mobile' : 'desktop'}): ${fullImagePath}`);
                     }
                 }
                 
