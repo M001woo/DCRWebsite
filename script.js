@@ -192,15 +192,28 @@ async function loadSectionBackgrounds() {
                 if (images.length > 1) {
                     const trustSection = document.querySelector('.trust-section');
                     if (trustSection && images[1]) {
-                        const imagePath = images[1].path || images[1];
+                        const imageData = images[1];
+                        const imagePath = imageData.path || imageData;
+                        const fullImagePath = imagePath.startsWith('http') ? imagePath : (imagePath.startsWith('/') ? imagePath : `./${imagePath}`);
+                        
                         trustSection.style.backgroundImage = `
                             linear-gradient(135deg, rgba(50, 50, 50, 0.7) 0%, rgba(40, 40, 40, 0.6) 100%),
-                            url('${imagePath}')
+                            url('${fullImagePath}')
                         `;
-                        trustSection.style.backgroundSize = 'cover';
-                        trustSection.style.backgroundPosition = 'center';
-                        trustSection.style.backgroundAttachment = 'fixed';
-                        console.log(`Applied background to trust section: ${imagePath}`);
+                        
+                        // Set background-size and position based on device type
+                        if (isMobileDevice) {
+                            trustSection.style.backgroundSize = '100% auto';
+                            trustSection.style.backgroundPosition = 'calc(50% - 50px) center';
+                            trustSection.style.backgroundAttachment = 'scroll';
+                            trustSection.style.backgroundRepeat = 'no-repeat';
+                        } else {
+                            trustSection.style.backgroundSize = 'cover';
+                            trustSection.style.backgroundPosition = 'center';
+                            trustSection.style.backgroundAttachment = 'fixed';
+                        }
+                        
+                        console.log(`Applied background to trust section (${isMobileDevice ? 'mobile' : 'desktop'}): ${fullImagePath}`);
                     }
                 }
                 
