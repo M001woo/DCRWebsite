@@ -1148,7 +1148,7 @@ body {
     }
     
     .service-card {
-        font-size: 14px;
+        font-size: 20px;
         padding: 20px 12px;
         letter-spacing: 0.5px;
         width: 100%;
@@ -1405,7 +1405,7 @@ body {
     }
     
     .service-card {
-        font-size: 15px;
+        font-size: 22px;
         padding: 24px 16px;
         width: 100%;
         max-width: 100%;
